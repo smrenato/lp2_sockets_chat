@@ -3,6 +3,7 @@
 
 #define FILA_CONEXAO 5
 #define ACCEPT_ERROR -1
+#define BUFF 140
 
 int main(int argc, char const *argv[])
 {
@@ -13,7 +14,11 @@ int main(int argc, char const *argv[])
     int * lista_clientes = NULL;
     socklen_t sock_len =0;
     int num_clientes_conetados = 0;
-    
+    pthread_t t;
+    param_t parametros = {};
+    int i=0;
+    char buffer[BUFF];
+
 
     // definido porta
     InterfaceConcexao(&porta);
@@ -34,11 +39,26 @@ int main(int argc, char const *argv[])
             perror("Não foi possivel aceitar a solicitacao\n");
             continue;
         }else
-        {
-            printf("Cliente: %d entrou!\n", novo_cliente);
-            ClientesConectados(lista_clientes, &num_clientes_conetados, &novo_cliente);
-        }
+
+        read(novo_cliente, buffer, BUFF);
+        printf("SOY UNO MANITO %d :%s\n", novo_cliente, buffer);
         
+        fgets(buffer, BUFF, stdin);
+
+        buffer[strlen(buffer)-1] ='\0';
+        send(novo_cliente, buffer, BUFF, 0);
+
+        // {
+        //     printf("Cliente: %d entrou!\n", novo_cliente);
+        //     ClientesConectados(lista_clientes, &num_clientes_conetados, &novo_cliente);
+        
+        
+        // }
+        // parametros.cliente_atual = novo_cliente;
+        // parametros.numero_total_clientes = num_clientes_conetados;
+        // parametros.socket_cliente = lista_clientes;
+   
+        // pthread_create(&t, NULL, RespostaCliente, (void*)&parametros);
         
 
     }

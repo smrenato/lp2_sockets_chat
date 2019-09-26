@@ -10,6 +10,7 @@
 
 int InterfaceConcexao(uint16_t *porta){
 
+    fflush(stdin);
     system("clear");
     printf("\n\n\n============================================\n");
     printf("\t\t Chat v1.0.0\n");
@@ -18,6 +19,7 @@ int InterfaceConcexao(uint16_t *porta){
     printf("Conectando o servidor chat na porta %hu \n", *porta);
     printf("\n\n\n============================================\n");
 
+    fflush(stdin);
     return 0;
 }
 

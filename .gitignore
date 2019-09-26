@@ -1,2 +1,8 @@
 *.o
 run
+
+servidor/sr
+cliente/cl
+
+servidor/run
+cliente/run
