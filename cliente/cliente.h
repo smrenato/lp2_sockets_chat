@@ -23,7 +23,7 @@ int InterfaceConcexao(uint16_t *porta, const char* endereco_ip, char* apelido_cl
 
 int InicializaClienteTCP(uint16_t porta, char* endereco_ip);
 
-int StrtoIP(char *str, int tamanho);
+int StrtoIP(char *str, int tamanho, char *ip );
 
 
 #endif

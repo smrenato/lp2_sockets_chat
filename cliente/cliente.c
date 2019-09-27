@@ -5,7 +5,7 @@
 #define ERROR_CONNECT ERROR_CREATE_SOCKET
 
 
-int StrtoIP(char *str, int tamanho){
+int StrtoIP(char *str, int tamanho, char *ip){
     int i, j=0, strTamanho=1;
     char c ='\0';
     char * strTmp[15];
@@ -14,7 +14,7 @@ int StrtoIP(char *str, int tamanho){
     {
         c = str[i];
         if( (c >'/') || (c=='.') ){
-                
+            ip[j++] = c;
 
         }
 
@@ -43,6 +43,7 @@ int InterfaceConcexao(uint16_t *porta, const char* endereco_ip, char* apelido_cl
     fflush(stdin);
     printf("\n");
     printf("Endereco IP 0.0.0.0: ");
+    
     //gets(endereco_ip);
     //fgets(endereco_ip, TAM_APELIDO, stdin);
     //endereco_ip[strlen(endereco_ip)-1] ='\0';
@@ -61,7 +62,7 @@ int InicializaClienteTCP(uint16_t porta, char* endereco_ip){
     
     int socket_cliente =0, endereco_rede, conectar = 0;
     struct sockaddr_in enderessamento;
-    printf("PORTA %hu", porta);
+    //printf("PORTA %hu", porta);
     socket_cliente = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_cliente == ERROR_CREATE_SOCKET) 
 	{ 
@@ -73,7 +74,7 @@ int InicializaClienteTCP(uint16_t porta, char* endereco_ip){
     enderessamento.sin_family = AF_INET; 
 	enderessamento.sin_port = htons(porta);
     
-    endereco_rede = inet_pton(AF_INET,"127.0.1.1", &enderessamento.sin_addr);
+    endereco_rede = inet_pton(AF_INET, "127.0.0.1" , &enderessamento.sin_addr);
     if(endereco_rede == ERROR_ENDERECO_REDE) 
 	{ 
 		perror("Nao foi possivel criar um endereco de rede\n");

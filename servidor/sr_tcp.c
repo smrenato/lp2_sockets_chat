@@ -11,12 +11,12 @@ int main(int argc, char const *argv[])
     int fd_socket=0;
     int novo_cliente = 0;
     struct sockaddr_in* enderessamento = NULL;
-    int * lista_clientes = NULL;
+    int  lista_clientes[10];
     socklen_t sock_len =0;
     int num_clientes_conetados = 0;
-    pthread_t t;
+    pthread_t thread_resposta_cliente;
     param_t parametros = {};
-    int i=0;
+    int i=0, flag = 0;
     char buffer[BUFF];
 
 
@@ -38,15 +38,25 @@ int main(int argc, char const *argv[])
         if(novo_cliente == ACCEPT_ERROR){
             perror("Não foi possivel aceitar a solicitacao\n");
             continue;
-        }else
+        }else{
+          
 
-        read(novo_cliente, buffer, BUFF);
-        printf("SOY UNO MANITO %d :%s\n", novo_cliente, buffer);
+            lista_clientes[i++] = novo_cliente;
+
+            read(novo_cliente, buffer, BUFF);
+            printf("SOY UNO MANITO %d :%s\n", lista_clientes[i], buffer);
+            
+            fgets(buffer, BUFF, stdin);
+
+            buffer[strlen(buffer)-1] ='\0';
+            send(novo_cliente, buffer, BUFF, 0);
+
+            pthread_create(&thread_resposta_cliente, NULL, RespostaCliente, NULL/*ainda flata o array de cleintes*/);
+
+        }
+
         
-        fgets(buffer, BUFF, stdin);
 
-        buffer[strlen(buffer)-1] ='\0';
-        send(novo_cliente, buffer, BUFF, 0);
 
         // {
         //     printf("Cliente: %d entrou!\n", novo_cliente);
@@ -62,6 +72,8 @@ int main(int argc, char const *argv[])
         
 
     }
+
+    close(fd_socket);
     
     return 0;
 }
